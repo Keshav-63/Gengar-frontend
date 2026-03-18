@@ -11,14 +11,18 @@ import { createShare } from '../api/sharing';
 import './Dashboard.css';
 
 export const Dashboard = () => {
-  const { user, fetchCurrentUser } = useAuth();
+  const { user, storageInfo, fetchCurrentUser, fetchStorageInfo } = useAuth();
   const { files, isLoading, fetchFiles, deleteFile, getDownloadUrl } = useFiles();
   const { addToast, currentFolderId } = useUIStore();
 
   useEffect(() => {
     fetchCurrentUser();
+    fetchStorageInfo();
     fetchFiles(currentFolderId || undefined);
-  }, [fetchCurrentUser, fetchFiles, currentFolderId]);
+  }, [fetchCurrentUser, fetchStorageInfo, fetchFiles, currentFolderId]);
+
+  const storageUsed = Math.max(0, storageInfo?.storage_used ?? user?.storage_used ?? 0);
+  const storageLimit = Math.max(0, storageInfo?.storage_limit ?? user?.storage_limit ?? 0);
 
   const handleDownload = useCallback(
     async (file: File) => {
@@ -128,10 +132,10 @@ export const Dashboard = () => {
           </div>
 
           <aside className="dashboard-sidebar">
-            {user && (
+            {(storageInfo || user) && (
               <StorageIndicator
-                used={user.storage_used}
-                limit={user.storage_limit}
+                used={storageUsed}
+                limit={storageLimit}
               />
             )}
           </aside>

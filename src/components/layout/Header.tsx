@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu, Bell, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useUIStore } from '../../store/uiStore';
 import { useAuth } from '../../hooks/useAuth';
 import './Header.css';
@@ -34,10 +35,10 @@ export const Header = () => {
           </button>
 
           <div className="header-user-menu">
-            <a href="/settings" className="header-user-menu-item">
+            <Link to="/settings" className="header-user-menu-item">
               <User size={16} />
               Settings
-            </a>
+            </Link>
             <button onClick={logout} className="header-user-menu-item header-user-menu-logout">
               Logout
             </button>

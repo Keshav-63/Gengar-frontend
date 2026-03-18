@@ -1,0 +1,19 @@
+.files-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.files-header {
+  margin-bottom: 0.5rem;
+}
+
+.files-title {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.files-subtitle {
+  margin: 0.4rem 0 0;
+  color: #9ca3af;
+}

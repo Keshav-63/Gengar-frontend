@@ -8,10 +8,12 @@ interface StorageIndicatorProps {
 }
 
 export const StorageIndicator = ({ used, limit }: StorageIndicatorProps) => {
-  const percentage = formatStoragePercentage(used, limit);
-  const usedGB = (used / (1024 * 1024 * 1024)).toFixed(2);
-  const limitGB = (limit / (1024 * 1024 * 1024)).toFixed(0);
-  const available = limit - used;
+  const safeUsed = Math.max(0, used);
+  const safeLimit = Math.max(1, limit);
+  const percentage = formatStoragePercentage(safeUsed, safeLimit);
+  const usedGB = (safeUsed / (1024 * 1024 * 1024)).toFixed(2);
+  const limitGB = (safeLimit / (1024 * 1024 * 1024)).toFixed(0);
+  const available = Math.max(0, safeLimit - safeUsed);
 
   const getStatusColor = (percent: number) => {
     if (percent >= 90) return 'critical';

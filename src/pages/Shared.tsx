@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Copy, ExternalLink, Link2 } from 'lucide-react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { getShares, revokeShare } from '../api/sharing';
+import { createShortURL, deleteShortURL, getShortURLStats } from '../api/shortUrls';
 import { formatDate } from '../utils/formatters';
 import { useUIStore } from '../store/uiStore';
 import { ShareResponse } from '../types';
@@ -21,6 +22,8 @@ const normalizeShares = (payload: any): ShareResponse[] => {
 
 export const Shared = () => {
   const [shares, setShares] = useState<ShareResponse[]>([]);
+  const [shortLinks, setShortLinks] = useState<Record<string, string>>({});
+  const [shortStats, setShortStats] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(false);
   const { addToast } = useUIStore();
 
@@ -67,6 +70,56 @@ export const Shared = () => {
     [addToast]
   );
 
+  const createShortLink = useCallback(
+    async (shareId: string) => {
+      try {
+        const shortUrl = await createShortURL({ share_id: shareId });
+        setShortLinks((prev) => ({ ...prev, [shareId]: shortUrl.short_url }));
+        addToast('Short URL created', 'success');
+      } catch {
+        addToast('Failed to create short URL', 'error');
+      }
+    },
+    [addToast]
+  );
+
+  const loadShortStats = useCallback(
+    async (shortUrl: string) => {
+      try {
+        const shortCode = shortUrl.split('/').pop();
+        if (!shortCode) {
+          return;
+        }
+        const stats = await getShortURLStats(shortCode);
+        setShortStats((prev) => ({ ...prev, [shortCode]: stats.click_count }));
+      } catch {
+        addToast('Failed to load short URL stats', 'error');
+      }
+    },
+    [addToast]
+  );
+
+  const removeShortLink = useCallback(
+    async (shareId: string, shortUrl: string) => {
+      try {
+        const shortCode = shortUrl.split('/').pop();
+        if (!shortCode) {
+          return;
+        }
+        await deleteShortURL(shortCode);
+        setShortLinks((prev) => {
+          const next = { ...prev };
+          delete next[shareId];
+          return next;
+        });
+        addToast('Short URL deleted', 'success');
+      } catch {
+        addToast('Failed to delete short URL', 'error');
+      }
+    },
+    [addToast]
+  );
+
   return (
     <DashboardLayout>
       <div className="shared-page">
@@ -108,7 +161,33 @@ export const Shared = () => {
                   <button onClick={() => revoke(share.id)} className="shared-action-btn danger" title="Revoke">
                     Revoke
                   </button>
+                  <button onClick={() => createShortLink(share.id)} className="shared-action-btn" title="Create short URL">
+                    Short URL
+                  </button>
                 </div>
+
+                {shortLinks[share.id] && (
+                  <div className="shared-short-row">
+                    <span className="shared-item-url">{shortLinks[share.id]}</span>
+                    <button
+                      onClick={() => loadShortStats(shortLinks[share.id])}
+                      className="shared-action-btn"
+                      title="Load short URL stats"
+                    >
+                      Stats
+                    </button>
+                    <button
+                      onClick={() => removeShortLink(share.id, shortLinks[share.id])}
+                      className="shared-action-btn danger"
+                      title="Delete short URL"
+                    >
+                      Delete
+                    </button>
+                    <span className="shared-item-meta">
+                      Clicks: {shortStats[shortLinks[share.id].split('/').pop() || ''] ?? 0}
+                    </span>
+                  </div>
+                )}
               </article>
             ))}
           </div>

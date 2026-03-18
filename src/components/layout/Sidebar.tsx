@@ -27,7 +27,7 @@ export const Sidebar = () => {
         <nav className="sidebar-nav">
           <div className="sidebar-section">
             <h3 className="sidebar-section-title">Main</h3>
-            <Link to="/dashboard" className="sidebar-nav-item">
+            <Link to="/files" className="sidebar-nav-item">
               <HardDrive size={20} />
               <span>My Files</span>
             </Link>
@@ -60,9 +60,9 @@ export const Sidebar = () => {
           </div>
 
           <div className="sidebar-section">
-            <Link to="/dashboard" className="sidebar-nav-item">
+            <Link to="/settings" className="sidebar-nav-item">
               <Settings size={20} />
-              <span>Dashboard</span>
+              <span>Settings</span>
             </Link>
           </div>
         </nav>

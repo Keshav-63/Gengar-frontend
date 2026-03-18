@@ -1,8 +1,11 @@
 import { useCallback } from 'react';
 import { useAuthStore } from '../store/authStore';
 import * as authAPI from '../api/auth';
+import { useState } from 'react';
+import { StorageInfo } from '../types';
 
 export const useAuth = () => {
+  const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
   const { user, isAuthenticated, isHydrated, isLoading, error, setUser, setTokens, setLoading, setError, clearAuth, hydrateAuth } = useAuthStore();
 
   const register = useCallback(async (email: string, password: string, fullName: string) => {
@@ -63,8 +66,20 @@ export const useAuth = () => {
     }
   }, [setUser, setError]);
 
+  const fetchStorageInfo = useCallback(async () => {
+    try {
+      const storage = await authAPI.getStorageInfo();
+      setStorageInfo(storage);
+      return storage;
+    } catch (err: any) {
+      setError(err.response?.data?.detail || 'Failed to fetch storage info');
+      return null;
+    }
+  }, [setError]);
+
   return {
     user,
+    storageInfo,
     isAuthenticated,
     isHydrated,
     isLoading,
@@ -73,6 +88,7 @@ export const useAuth = () => {
     login,
     logout,
     fetchCurrentUser,
+    fetchStorageInfo,
     hydrateAuth,
   };
 };

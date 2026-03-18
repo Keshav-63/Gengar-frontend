@@ -9,6 +9,11 @@ export interface User {
   updated_at: string;
 }
 
+export interface UserUpdate {
+  full_name?: string;
+  email?: string;
+}
+
 export interface TokenResponse {
   access_token: string;
   refresh_token: string;
@@ -62,6 +67,7 @@ export interface ShareResponse {
   resource_type: string;
   resource_id: string;
   owner_id: string;
+  shared_with_user_id?: string | null;
   permission: string;
   access_token: string;
   is_public: boolean;
@@ -70,6 +76,21 @@ export interface ShareResponse {
   is_active: boolean;
   access_count: number;
   share_url: string;
+}
+
+export interface ShareListResponse {
+  shares: ShareResponse[];
+  total: number;
+}
+
+export interface ShareAccessResponse {
+  resource_type: string;
+  resource_name: string;
+  permission: string;
+  download_url?: string;
+  owner_name: string;
+  created_at: string;
+  expires_at?: string;
 }
 
 export interface ShortURLResponse {
@@ -82,6 +103,11 @@ export interface ShortURLResponse {
   expires_at?: string;
   click_count: number;
   is_active: boolean;
+}
+
+export interface ShortURLListResponse {
+  short_urls: ShortURLResponse[];
+  total: number;
 }
 
 export interface Upload {

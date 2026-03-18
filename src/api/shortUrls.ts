@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { ShortURLResponse } from '../types';
+import { ShortURLListResponse, ShortURLResponse } from '../types';
 
 export interface ShortURLCreate {
   share_id: string;
@@ -19,8 +19,13 @@ export const createShortURL = async (data: ShortURLCreate): Promise<ShortURLResp
   return response.data;
 };
 
-export const getShortURLs = async () => {
+export const getShortURLs = async (): Promise<ShortURLListResponse> => {
   const response = await apiClient.get('/short-urls');
+  return response.data;
+};
+
+export const resolveShortURL = async (shortCode: string) => {
+  const response = await apiClient.get(`/s/${shortCode}`);
   return response.data;
 };
 

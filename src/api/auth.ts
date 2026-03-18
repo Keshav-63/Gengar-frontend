@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { User, TokenResponse } from '../types';
+import { StorageInfo, User, UserUpdate, TokenResponse } from '../types';
 import { clearStoredAuth } from '../utils/authStorage';
 
 const normalizeTokenResponse = (payload: any): TokenResponse => {
@@ -26,6 +26,21 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface TokenRefreshRequest {
+  refresh_token: string;
+}
+
+export interface TokenRefreshResponse {
+  access_token: string;
+  token_type: string;
+  refresh_token?: string;
+}
+
+export interface PasswordChangeRequest {
+  current_password: string;
+  new_password: string;
+}
+
 export const register = async (data: RegisterRequest): Promise<TokenResponse> => {
   const response = await apiClient.post('/auth/register', data);
   return normalizeTokenResponse(response.data);
@@ -43,7 +58,7 @@ export const getCurrentUser = async (): Promise<User> => {
 
 export const getStorageInfo = async () => {
   const response = await apiClient.get('/auth/storage');
-  return response.data;
+  return response.data as StorageInfo;
 };
 
 export const changePassword = async (currentPassword: string, newPassword: string) => {
@@ -51,6 +66,26 @@ export const changePassword = async (currentPassword: string, newPassword: strin
     current_password: currentPassword,
     new_password: newPassword,
   });
+  return response.data;
+};
+
+export const refreshToken = async (data: TokenRefreshRequest): Promise<TokenRefreshResponse> => {
+  const response = await apiClient.post('/auth/refresh', data);
+  const payload = response.data;
+  return {
+    access_token: payload?.access_token || payload?.accessToken || payload?.token || '',
+    token_type: payload?.token_type || payload?.tokenType || 'bearer',
+    refresh_token: payload?.refresh_token || payload?.refreshToken,
+  };
+};
+
+export const updateCurrentUser = async (data: UserUpdate): Promise<User> => {
+  const response = await apiClient.put('/auth/me', data);
+  return response.data;
+};
+
+export const changePasswordByPayload = async (data: PasswordChangeRequest) => {
+  const response = await apiClient.put('/auth/password', data);
   return response.data;
 };
 

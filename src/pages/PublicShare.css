@@ -1,0 +1,22 @@
+.public-share-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.public-share-card {
+  width: min(640px, 100%);
+  border: 1px solid #2d2d2d;
+  border-radius: 12px;
+  background: #1a1a1a;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.public-share-card h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.4rem;
+}
