@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronRight, Folder } from 'lucide-react';
 import { FolderTreeNode } from '../../types';
 import './FolderTree.css';

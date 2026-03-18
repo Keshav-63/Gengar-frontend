@@ -1,5 +1,4 @@
-import React from 'react';
-import { formatFileSize, formatStoragePercentage } from '../../utils/formatters';
+import { formatStoragePercentage } from '../../utils/formatters';
 import './StorageIndicator.css';
 
 interface StorageIndicatorProps {

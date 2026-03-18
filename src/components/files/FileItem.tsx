@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { FileIcon, Download, Trash2, Share2, MoreVertical } from 'lucide-react';
 import { File } from '../../types';
 import { formatFileSize, formatDate } from '../../utils/formatters';

@@ -25,9 +25,9 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className={`modal modal-${size}`} onClick={(e) => e.stopPropagation()}>
-        {(title || onClose) && (
+        {title && (
           <div className="modal-header">
-            {title && <h2 className="modal-title">{title}</h2>}
+            <h2 className="modal-title">{title}</h2>
             <button className="modal-close" onClick={onClose}>
               <X size={20} />
             </button>

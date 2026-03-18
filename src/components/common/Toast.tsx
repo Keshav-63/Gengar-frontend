@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Check, AlertCircle, Info, X as XIcon } from 'lucide-react';
 import { useUIStore } from '../../store/uiStore';
 import './Toast.css';
