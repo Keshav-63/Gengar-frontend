@@ -1,0 +1,71 @@
+.folder-tree-node {
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-tree-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.folder-tree-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.folder-tree-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.folder-tree-toggle.expanded {
+  transform: rotate(90deg);
+}
+
+.folder-tree-spacer {
+  width: 20px;
+}
+
+.folder-tree-icon {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.folder-tree-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-tree-count {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  background: var(--surface-active);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.folder-tree-children {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}

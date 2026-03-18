@@ -1,0 +1,14 @@
+/* Main App Styles */
+#root {
+  min-height: 100vh;
+}
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent text selection on buttons */
+button {
+  user-select: none;
+}
